@@ -1,0 +1,49 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: mcr.microsoft.com/playwright:focal
+    steps:
+      - uses: actions/checkout@v1
+      - name: Cache node modules and playwright browsers
+        uses: actions/cache@v2
+        with:
+          path: |
+              node_modules/
+              ~/.cache/ms-playwright
+              ~/.yarn
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/yarn-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+      - name: install dependencies
+        run: yarn
+      
+  lint:
+    needs: build
+    runs-on: mcr.microsoft.com/playwright:focal
+    steps:
+      - uses: actions/checkout@v1
+      - name: run linter tests
+        run: yarn lint
+
+  test:
+    needs: build
+    runs-on: mcr.microsoft.com/playwright:focal
+    steps:
+      - uses: actions/checkout@v1
+      - name: run tests in playwright
+        run: yarn test
+      - name: push the results to datadog
+        env:
+          DATADOG_API_KEY: ${{ secrets.DATADOG_API_KEY }}
+        run: DATADOG_API_KEY=$DATADOG_API_KEY DD_ENV=ci yarn datadog-ci junit upload --service playwright-e2e test-results/results.xml
+      - uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: my-artifact
+          path: test-results/
+      

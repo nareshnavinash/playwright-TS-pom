@@ -1,0 +1,54 @@
+{
+  "name": "playwright-typescript-pom",
+  "version": "1.0.0",
+  "description": "E2E tests in playwright & typescript with POM",
+  "main": "index.js",
+  "repository": "git@github.com/nareshnavinash/playwright-typescript-pom.git",
+  "author": "Naresh Sekar <nareshnavinash@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "test": "playwright test",
+    "test:chromium": "playwright test --project chromium",
+    "test:firefox": "playwright test --project firefox",
+    "test:webkit": "playwright test --project webkit",
+    "pwdebug": "PWDEBUG=1 playwright test",
+    "show-trace": "playwright show-trace",
+    "lint": "eslint ./*/*.ts",
+    "lint:fix": "eslint ./*/*.ts --fix",
+    "pretty": "prettier --no-config './*/*.ts' --write",
+    "prepare": "husky install"
+  },
+  "dependencies": {
+    "@datadog/datadog-ci": "^0.17.13",
+    "@faker-js/faker": "^6.0.0-alpha.6",
+    "@playwright/test": "^1.19.1",
+    "playwright": "^1.19.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged --allow-empty"
+    }
+  },
+  "prettier": {
+    "singleQuote": true,
+    "semi": true,
+    "printWidth": 120
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.18",
+    "@typescript-eslint/eslint-plugin": "^5.12.0",
+    "@typescript-eslint/parser": "^5.12.0",
+    "eslint": "^7.32.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^5.2.0",
+    "husky": "^7.0.4",
+    "lint-staged": "^12.3.4",
+    "prettier": "^2.5.1",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-plugin-prettier": "^2.3.0",
+    "typescript": "^4.5.5"
+  }
+}

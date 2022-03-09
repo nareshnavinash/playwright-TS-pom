@@ -1,0 +1,49 @@
+default:
+    image: mcr.microsoft.com/playwright:focal
+
+variables:
+    DATADOG_API_KEY: $DATADOG_API_KEY
+    CACHE_FALLBACK_KEY: npm_$CI_DEFAULT_BRANCH
+
+stages:
+  - prepare
+  - verify
+  - publish
+
+# This folder is cached between builds
+# https://docs.gitlab.com/ee/ci/yaml/index.html#cache
+cache:
+    paths:
+        - node_modules/
+        - ~/.cache/ms-playwright
+    key: npm_$CI_COMMIT_REF_SLUG
+
+install:
+    stage: prepare
+    script:
+        - yarn
+    artifacts:
+        paths:
+            - node_modules
+            - ~/.cache/ms-playwright
+
+lint:
+    stage: verify
+    dependencies:
+        - install
+    script:
+        - yarn lint
+
+test-chromium:
+    stage: verify
+    dependencies:
+        - install
+    script:
+        - yarn test:chromium
+    after_script:
+        - DATADOG_API_KEY=$DATADOG_API_KEY DD_ENV=ci yarn datadog-ci junit upload --service miro-playwright-e2e test-results/results.xml
+    artifacts:
+        paths:
+            - test-results/
+        when: on_failure
+        expire_in: 3 days
