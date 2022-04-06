@@ -28,8 +28,8 @@ const config: PlaywrightTestConfig = {
       use: {
         ...devices['Desktop Chrome'],
         launchOptions: {
-          args: ['--test-type',
-            '--window-size=1920,1080',
+          args: [
+            '--test-type',
             '--no-sandbox',
             '--disable-accelerated-video',
             '--disable-accelerated-plugins',
@@ -38,8 +38,6 @@ const config: PlaywrightTestConfig = {
             '--disable-accelerated-2d-canvas',
             '--disable-web-security',
             '--allow-file-access-from-files',
-            'acceptInsecureCerts=true',
-            'acceptSslCert=true',
             '--allow-running-insecure-content',
             '--dev', '--allow-insecure-localhost',
             '--disable-gesture-requirement-for-media-playback',
@@ -51,7 +49,8 @@ const config: PlaywrightTestConfig = {
             '--use-fake-ui-for-media-stream',
             '--use-fake-device-for-media-stream',
             '--use-file-for-fake-video-capture=$PWD/helpers/sample.mjpeg',
-            '--use-file-for-fake-audio-capture=$PWD/helpers/sample.wav']
+            '--use-file-for-fake-audio-capture=$PWD/helpers/sample.wav'
+          ]
         }
       }
     },
