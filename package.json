@@ -15,7 +15,7 @@
     "pwdebug": "PWDEBUG=1 playwright test",
     "show-trace": "playwright show-trace",
     "lint": "eslint ./*/*.ts",
-    "lint:fix": "eslint ./*/*.ts --fix",
+    "lint:fix": "eslint ./*/*.ts ./*.ts --fix",
     "pretty": "prettier --no-config './*/*.ts' --write",
     "prepare": "husky install"
   },

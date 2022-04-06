@@ -25,7 +25,35 @@ const config: PlaywrightTestConfig = {
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] }
+      use: {
+        ...devices['Desktop Chrome'],
+        launchOptions: {
+          args: ['--test-type',
+            '--window-size=1920,1080',
+            '--no-sandbox',
+            '--disable-accelerated-video',
+            '--disable-accelerated-plugins',
+            '--disable-accelerated-layers',
+            '--disable-accelerated-compositing',
+            '--disable-accelerated-2d-canvas',
+            '--disable-web-security',
+            '--allow-file-access-from-files',
+            'acceptInsecureCerts=true',
+            'acceptSslCert=true',
+            '--allow-running-insecure-content',
+            '--dev', '--allow-insecure-localhost',
+            '--disable-gesture-requirement-for-media-playback',
+            '--ignore-certificate-errors',
+            '--disable-dev-shm-usage',
+            '--disable-gpu',
+            '--autoplay-policy=no-user-gesture-required',
+            '--disable-infobars',
+            '--use-fake-ui-for-media-stream',
+            '--use-fake-device-for-media-stream',
+            '--use-file-for-fake-video-capture=$PWD/helpers/sample.mjpeg',
+            '--use-file-for-fake-audio-capture=$PWD/helpers/sample.wav']
+        }
+      }
     },
     {
       name: 'firefox',
